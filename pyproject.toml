@@ -14,3 +14,34 @@ dependencies = [
     "resend>=2.30.1",
     "sqlmodel>=0.0.38",
 ]
+
+[tool.basedpyright]
+include = ["app"]
+exclude = ["**/node_modules",
+    "**/__pycache__",
+    "src/experimental",
+    "src/typestubs"
+]
+# ignore = ["src/oldstuff"]
+defineConstant = { DEBUG = true }
+# stubPath = "src/stubs"
+
+reportMissingImports = "error"
+reportMissingTypeStubs = false
+reportCallInDefaultInitializer = "none"
+reportUnusedImport = false
+
+pythonVersion = "3.14"
+pythonPlatform = "Linux"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]
+
+# executionEnvironments = [
+#   { root = "src/web", pythonVersion = "3.5", pythonPlatform = "Windows", extraPaths = [ "src/service_libs" ], reportMissingImports = "warning" },
+#   { root = "src/sdk", pythonVersion = "3.0", extraPaths = [ "src/backend" ] },
+#   { root = "src/tests", reportPrivateUsage = false, extraPaths = ["src/tests/e2e", "src/sdk" ]},
+#   { root = "src" }
+# ]
