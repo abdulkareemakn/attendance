@@ -25,3 +25,5 @@ app = FastAPI(
 app.add_middleware(SessionMiddleware, secret_key=settings.session_secret)
 
 app.include_router(auth.router)
+app.include_router(courses.router)
+app.include_router(record.router)

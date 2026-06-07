@@ -65,3 +65,20 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None) -> s
     return jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
 
 
+def verify_course(course_id: uuid.UUID, user: User, db: Session) -> Course:
+    course = db.get(Course, course_id)
+    if not course:
+        raise HTTPException(status_code=404, detail="Course not found")
+    if course.user_id != user.id:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    return course
+
+
+def verify_record(record_id: uuid.UUID, user: User, db: Session) -> AttendanceRecord:
+    record = db.get(AttendanceRecord, record_id)
+    if not record:
+        raise HTTPException(status_code=404, detail="Record Not Found")
+    if record.user_id != user.id:
+        raise HTTPException(status_code=403, detail="Not Authorized")
+
+    return record
