@@ -1,3 +1,5 @@
+from app.schemas.user import UserPublic
+from fastapi.responses import RedirectResponse
 from datetime import timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -7,7 +9,7 @@ from starlette.requests import Request
 from app.db.connection import get_db
 from app.db.models import User
 from app.schemas.token import Token
-from app.security import create_access_token, oauth
+from app.security import create_access_token, oauth, get_current_user
 from app.settings import settings
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -29,10 +31,10 @@ async def callback(request: Request, db: Session = Depends(get_db)):
 
     email: str = userinfo["email"]
 
-    if not email.endswith("@cuilahore.edu.pk"):
-        raise HTTPException(
-            status_code=403, detail="Access restricted to CUI Lahore accounts"
-        )
+    # if not email.endswith("@cuilahore.edu.pk"):
+    #     raise HTTPException(
+    #         status_code=403, detail="Access restricted to CUI Lahore accounts"
+    #     )
 
     user = db.exec(select(User).where(User.email == email)).first()
     if not user:
@@ -45,4 +47,12 @@ async def callback(request: Request, db: Session = Depends(get_db)):
         data={"sub": user.email},
         expires_delta=timedelta(minutes=settings.access_token_expire_minutes),
     )
-    return Token(access_token=access_token, token_type="bearer")
+    return RedirectResponse(
+        url=f"http://localhost:5173/auth/callback?token={access_token}"
+    )
+    # return Token(access_token=access_token, token_type="bearer")
+
+
+@router.get("/me", response_model=UserPublic)
+async def get_me(current_user: User = Depends(get_current_user)):
+    return current_user
