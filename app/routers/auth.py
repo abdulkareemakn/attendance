@@ -48,7 +48,7 @@ async def callback(request: Request, db: Session = Depends(get_db)):
         expires_delta=timedelta(minutes=settings.access_token_expire_minutes),
     )
     return RedirectResponse(
-        url=f"http://localhost:5173/auth/callback?token={access_token}"
+        url=f"{settings.frontend_url}/auth/callback?token={access_token}"
     )
     # return Token(access_token=access_token, token_type="bearer")
 
