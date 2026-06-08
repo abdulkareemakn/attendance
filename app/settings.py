@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     database_url: str
     google_client_id: str
     google_client_secret: str
-    resend_api_key: str
+    deployment_type: str
 
     class Config:
         env_file = ".env"

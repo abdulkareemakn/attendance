@@ -7,7 +7,7 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from app.db.connection import engine
 from app.routers import auth, courses, dashboard, record
-from app.settings import settings
+from app.settings import settings, Settings
 
 
 @asynccontextmanager
@@ -21,6 +21,9 @@ app = FastAPI(
     description="Track your attendance",
     version="0.1.0",
     lifespan=lifespan,
+    docs_url="/docs" if settings.deployment_type == "dev" else None,
+    redoc_url="/redoc" if settings.deployment_type == "dev" else None,
+    openapi_url="/openapi.json" if settings.deployment_type == "dev" else None,
 )
 
 app.add_middleware(
