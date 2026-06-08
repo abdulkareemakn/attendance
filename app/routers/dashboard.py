@@ -15,10 +15,14 @@ router = APIRouter(prefix="/dashboard")
 
 @router.get("/summary", response_model=SummaryResponse)
 async def summary(
-    user: User = Depends(get_current_user), db: Session = Depends(get_db)
+    include_archived: bool = False,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
 ):
     results: list[CourseSummary] = []
     stmt = select(Course).where(Course.user_id == user.id)
+    if not include_archived:
+        stmt = stmt.where(Course.is_archived == False)
     courses = db.exec(stmt).all()
     for course in courses:
         records = db.exec(

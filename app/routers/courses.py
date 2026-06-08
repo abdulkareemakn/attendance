@@ -40,7 +40,7 @@ async def get_courses(
 ):
     stmt = select(Course).where(Course.user_id == user.id)
     if not include_archived:
-        stmt = stmt.where(not Course.is_archived)
+        stmt = stmt.where(Course.is_archived == False)
     return db.exec(stmt).all()
 
 
@@ -77,8 +77,25 @@ async def update_course(
     return course
 
 
-@router.patch("/{course_id}/unarchive", response_model=CourseRead)
+@router.patch("/{course_id}/archive", response_model=CourseRead)
 async def archive_course(
+    course_id: uuid.UUID,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    course = verify_course(course_id, user, db)
+
+    course.is_archived = True
+
+    db.add(course)
+    db.commit()
+    db.refresh(course)
+
+    return course
+
+
+@router.patch("/{course_id}/unarchive", response_model=CourseRead)
+async def unarchive_course(
     course_id: uuid.UUID,
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
