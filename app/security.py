@@ -31,7 +31,7 @@ def get_user(email: EmailStr, db: Session) -> User | None:
     return db.exec(select(User).where(User.email == email)).first()
 
 
-async def get_current_user(
+def get_current_user(
     token: Annotated[str, Depends(oauth2_scheme)],
     db: Session = Depends(get_db),
 ) -> User:

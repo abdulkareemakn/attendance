@@ -19,7 +19,7 @@ router = APIRouter(prefix="/courses", tags=["attendance"])
 @router.post(
     "/{course_id}/attendance", response_model=AttendanceRecordRead, status_code=201
 )
-async def add_record(
+def add_record(
     course_id: uuid.UUID,
     record: AttendanceRecordCreate,
     user: User = Depends(get_current_user),
@@ -45,7 +45,7 @@ async def add_record(
 
 
 @router.get("/{course_id}/attendance", response_model=list[AttendanceRecordRead])
-async def get_attendance_records(
+def get_attendance_records(
     course_id: uuid.UUID,
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -59,7 +59,7 @@ async def get_attendance_records(
 @router.patch(
     "/{course_id}/attendance/{record_id}", response_model=AttendanceRecordRead
 )
-async def update_attendance_record(
+def update_attendance_record(
     course_id: uuid.UUID,
     record_id: uuid.UUID,
     update: AttendanceRecordUpdate,
@@ -91,7 +91,7 @@ async def update_attendance_record(
 
 
 @router.delete("/{course_id}/attendance/{record_id}", status_code=204)
-async def delete_attendance_record(
+def delete_attendance_record(
     course_id: uuid.UUID,
     record_id: uuid.UUID,
     user: User = Depends(get_current_user),

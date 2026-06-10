@@ -12,7 +12,7 @@ router = APIRouter(prefix="/courses", tags=["Courses"])
 
 
 @router.post("/", response_model=CourseRead, status_code=201)
-async def create_course(
+def create_course(
     course: CourseCreate,
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -33,7 +33,7 @@ async def create_course(
 
 
 @router.get("/", response_model=list[CourseRead])
-async def get_courses(
+def get_courses(
     include_archived: bool = False,
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -45,7 +45,7 @@ async def get_courses(
 
 
 @router.get("/{course_id}", response_model=CourseRead)
-async def get_course(
+def get_course(
     course_id: uuid.UUID,
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -56,7 +56,7 @@ async def get_course(
 
 
 @router.patch("/{course_id}", response_model=CourseRead)
-async def update_course(
+def update_course(
     course_id: uuid.UUID,
     update: CourseUpdate,
     user: User = Depends(get_current_user),
@@ -78,7 +78,7 @@ async def update_course(
 
 
 @router.patch("/{course_id}/archive", response_model=CourseRead)
-async def archive_course(
+def archive_course(
     course_id: uuid.UUID,
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -95,7 +95,7 @@ async def archive_course(
 
 
 @router.patch("/{course_id}/unarchive", response_model=CourseRead)
-async def unarchive_course(
+def unarchive_course(
     course_id: uuid.UUID,
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -112,7 +112,7 @@ async def unarchive_course(
 
 
 @router.delete("/{course_id}", status_code=204)
-async def delete_course(
+def delete_course(
     course_id: uuid.UUID,
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),

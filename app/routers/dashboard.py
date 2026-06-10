@@ -14,7 +14,7 @@ router = APIRouter(prefix="/dashboard")
 
 
 @router.get("/summary", response_model=SummaryResponse)
-async def summary(
+def summary(
     include_archived: bool = False,
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),

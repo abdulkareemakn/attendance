@@ -13,3 +13,7 @@ wheels/
 
 Orbit\ -\ 1
 attendance.db
+
+.agents/
+opencode.json
+skills-lock.json
