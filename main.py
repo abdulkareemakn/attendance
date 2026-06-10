@@ -1,11 +1,12 @@
+from fastapi.responses import Response
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
-from sqlmodel import SQLModel
+from fastapi import FastAPI, Depends
+from sqlmodel import SQLModel, Session, select
 from starlette.middleware.sessions import SessionMiddleware
 
-from app.db.connection import engine
+from app.db.connection import engine, get_db
 from app.routers import auth, courses, dashboard, record
 from app.settings import settings, Settings
 
@@ -40,3 +41,18 @@ app.include_router(auth.router)
 app.include_router(courses.router)
 app.include_router(record.router)
 app.include_router(dashboard.router)
+
+
+@app.get("/")
+def root():
+    return {"message": "Orbit API", "version": "1.1.0"}
+
+
+@app.get("/health")
+def health(response: Response, session: Session = Depends(get_db)):
+    try:
+        session.exec(select(1))
+        return {"status": "ok"}
+    except Exception as e:
+        response.status_code = 503
+        return {"status": "unavailable", "detail": str(e)}
