@@ -11,3 +11,4 @@ class UserPublic(SQLModel):
 
 class UserUpdate(SQLModel):
     full_name: str | None = None
+    is_active: bool | None = None

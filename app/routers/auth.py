@@ -1,15 +1,14 @@
-from app.schemas.user import UserPublic
-from fastapi.responses import RedirectResponse
 from datetime import timedelta
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import RedirectResponse
 from sqlmodel import Session, select
 from starlette.requests import Request
 
 from app.db.connection import get_db
 from app.db.models import User
-from app.schemas.token import Token
-from app.security import create_access_token, oauth, get_current_user
+from app.schemas.user import UserPublic, UserUpdate
+from app.security import create_access_token, get_current_user, oauth
 from app.settings import settings
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -55,4 +54,23 @@ async def callback(request: Request, db: Session = Depends(get_db)):
 
 @router.get("/me", response_model=UserPublic)
 def get_me(current_user: User = Depends(get_current_user)):
+    return current_user
+
+
+@router.patch("/me", response_model=UserPublic)
+def update_username(
+    user: UserUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if user.full_name is not None:
+        current_user.full_name = user.full_name
+
+    if user.is_active is not None:
+        current_user.is_active = user.is_active
+
+    db.add(current_user)
+    db.commit()
+    db.refresh(current_user)
+
     return current_user
