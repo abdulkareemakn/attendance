@@ -7,7 +7,7 @@ from sqlmodel import SQLModel, Session, select
 from starlette.middleware.sessions import SessionMiddleware
 
 from app.db.connection import engine, get_db
-from app.routers import auth, courses, dashboard, record
+from app.routers import auth, courses, dashboard, record, assignments, quizzes
 from app.settings import settings, Settings
 
 
@@ -41,6 +41,8 @@ app.include_router(auth.router)
 app.include_router(courses.router)
 app.include_router(record.router)
 app.include_router(dashboard.router)
+app.include_router(assignments.router)
+app.include_router(quizzes.router)
 
 
 @app.get("/")

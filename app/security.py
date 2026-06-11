@@ -12,7 +12,7 @@ from authlib.integrations.starlette_client import OAuth
 from starlette.config import Config
 
 from app.db.connection import get_db
-from app.db.models import AttendanceRecord, Course, User
+from app.db.models import AttendanceRecord, Course, User, Assignment, Quiz
 from app.schemas.token import TokenData
 from app.settings import settings
 
@@ -82,3 +82,23 @@ def verify_record(record_id: uuid.UUID, user: User, db: Session) -> AttendanceRe
         raise HTTPException(status_code=403, detail="Not Authorized")
 
     return record
+
+
+def verify_assignment(assignment_id: uuid.UUID, user: User, db: Session) -> Assignment:
+    assignment = db.get(Assignment, assignment_id)
+    if not assignment:
+        raise HTTPException(status_code=404, detail="Assignment not found")
+    course = db.get(Course, assignment.course_id)
+    if not course or course.user_id != user.id:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    return assignment
+
+
+def verify_quiz(quiz_id: uuid.UUID, user: User, db: Session) -> Quiz:
+    quiz = db.get(Quiz, quiz_id)
+    if not quiz:
+        raise HTTPException(status_code=404, detail="Quiz not found")
+    course = db.get(Course, quiz.course_id)
+    if not course or course.user_id != user.id:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    return quiz
