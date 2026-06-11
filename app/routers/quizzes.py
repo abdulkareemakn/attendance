@@ -1,6 +1,7 @@
+from sqlalchemy.exc import IntegrityError
 import uuid
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select
 
 from app.db.connection import get_db
@@ -23,6 +24,7 @@ def create_quiz(
     db: Session = Depends(get_db),
 ):
     verify_course(course_id, user, db)
+
     new_quiz = Quiz(
         course_id=course_id,
         number=quiz.number,
@@ -30,8 +32,17 @@ def create_quiz(
         obtained_marks=quiz.obtained_marks,
         note=quiz.note,
     )
-    db.add(new_quiz)
-    db.commit()
+
+    try:
+        db.add(new_quiz)
+        db.commit()
+    except IntegrityError as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="Failed to add quiz: Quiz number already exists for this course",
+        )
+
     db.refresh(new_quiz)
     return new_quiz
 
@@ -75,8 +86,17 @@ def update_quiz(
         quiz.obtained_marks = update.obtained_marks
     if update.note is not None:
         quiz.note = update.note
-    db.add(quiz)
-    db.commit()
+
+    try:
+        db.add(quiz)
+        db.commit()
+    except IntegrityError as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="Failed to update quiz: Quiz number already exists for this course",
+        )
+
     db.refresh(quiz)
     return quiz
 

@@ -1,6 +1,7 @@
+from sqlalchemy.exc import IntegrityError
 import uuid
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 
 from app.db.connection import get_db
@@ -30,8 +31,16 @@ def create_assignment(
         obtained_marks=assignment.obtained_marks,
         note=assignment.note,
     )
-    db.add(new_assignment)
-    db.commit()
+    try:
+        db.add(new_assignment)
+        db.commit()
+    except IntegrityError as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="Failed to add assignment: assignment with this number already exists",
+        )
+
     db.refresh(new_assignment)
     return new_assignment
 
@@ -75,8 +84,17 @@ def update_assignment(
         assignment.obtained_marks = update.obtained_marks
     if update.note is not None:
         assignment.note = update.note
-    db.add(assignment)
-    db.commit()
+
+    try:
+        db.add(assignment)
+        db.commit()
+    except IntegrityError as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="Failed to add assignment: assignment with this number already exists",
+        )
+
     db.refresh(assignment)
     return assignment
 
