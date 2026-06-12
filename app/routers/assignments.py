@@ -85,6 +85,11 @@ def update_assignment(
     if update.note is not None:
         assignment.note = update.note
 
+    if assignment.obtained_marks > assignment.total_marks:
+        raise HTTPException(
+            status_code=409, detail="Obtained Marks must be less than total marks."
+        )
+
     try:
         db.add(assignment)
         db.commit()

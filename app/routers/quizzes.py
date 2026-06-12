@@ -87,6 +87,11 @@ def update_quiz(
     if update.note is not None:
         quiz.note = update.note
 
+    if quiz.obtained_marks > quiz.total_marks:
+        raise HTTPException(
+            status_code=409, detail="Obtained Marks must be less than total marks."
+        )
+
     try:
         db.add(quiz)
         db.commit()
