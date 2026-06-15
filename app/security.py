@@ -1,18 +1,18 @@
+import uuid
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
-import uuid
 
 import jwt
+from authlib.integrations.starlette_client import OAuth
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 from pydantic import EmailStr
 from sqlmodel import Session, select
-from authlib.integrations.starlette_client import OAuth
 from starlette.config import Config
 
 from app.db.connection import get_db
-from app.db.models import AttendanceRecord, Course, User, Assignment, Quiz
+from app.db.models import Assignment, AttendanceRecord, Course, Quiz, User
 from app.schemas.token import TokenData
 from app.settings import settings
 

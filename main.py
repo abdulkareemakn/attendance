@@ -1,14 +1,14 @@
-from fastapi.responses import Response
-from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Depends
-from sqlmodel import SQLModel, Session, select
+from fastapi import Depends, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import Response
+from sqlmodel import Session, SQLModel, select
 from starlette.middleware.sessions import SessionMiddleware
 
 from app.db.connection import engine, get_db
-from app.routers import auth, courses, dashboard, record, assignments, quizzes
-from app.settings import settings, Settings
+from app.routers import assignments, auth, courses, dashboard, quizzes, record
+from app.settings import Settings, settings
 
 
 @asynccontextmanager

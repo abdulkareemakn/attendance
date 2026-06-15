@@ -10,8 +10,7 @@ from app.schemas.attendance_record import (
     AttendanceRecordRead,
     AttendanceRecordUpdate,
 )
-from app.security import get_current_user, verify_record, verify_course
-
+from app.security import get_current_user, verify_course, verify_record
 
 router = APIRouter(prefix="/courses", tags=["attendance"])
 

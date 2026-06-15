@@ -1,7 +1,9 @@
-from app.schemas.enums import RecordType, Status
 import datetime
 import uuid
-from sqlmodel import Field, SQLModel, Relationship, UniqueConstraint
+
+from sqlmodel import Field, Relationship, SQLModel, UniqueConstraint
+
+from app.schemas.enums import RecordType, Status
 
 
 class User(SQLModel, table=True):

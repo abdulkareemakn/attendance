@@ -1,7 +1,7 @@
-from sqlalchemy.exc import IntegrityError
 import uuid
 
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, select
 
 from app.db.connection import get_db
@@ -11,7 +11,7 @@ from app.schemas.assignment import (
     AssignmentRead,
     AssignmentUpdate,
 )
-from app.security import get_current_user, verify_course, verify_assignment
+from app.security import get_current_user, verify_assignment, verify_course
 
 router = APIRouter(prefix="/courses", tags=["Assignments"])
 

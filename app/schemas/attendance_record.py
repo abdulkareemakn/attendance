@@ -1,8 +1,10 @@
-import uuid
-from app.schemas.enums import RecordType, Status
 import datetime
+import uuid
+
 from pydantic import BaseModel
+
 from app.schemas.course import CourseBase
+from app.schemas.enums import RecordType, Status
 
 
 class AttendanceRecordBase(BaseModel):

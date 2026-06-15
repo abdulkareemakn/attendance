@@ -1,6 +1,7 @@
 from collections.abc import Sequence
-from app.schemas.enums import RecordType, Status
+
 from app.db.models import AttendanceRecord
+from app.schemas.enums import RecordType, Status
 
 
 def calculate_percentage(

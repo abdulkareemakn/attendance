@@ -39,6 +39,10 @@ dev = [
     "pytest>=9.0.3",
 ]
 
+[tool.ruff.format]
+indent-style = "space"
+quote-style = "double"
+
 # executionEnvironments = [
 #   { root = "src/web", pythonVersion = "3.5", pythonPlatform = "Windows", extraPaths = [ "src/service_libs" ], reportMissingImports = "warning" },
 #   { root = "src/sdk", pythonVersion = "3.0", extraPaths = [ "src/backend" ] },

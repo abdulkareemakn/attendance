@@ -1,5 +1,6 @@
-from app.schemas.course import CourseSummary
 from pydantic import BaseModel
+
+from app.schemas.course import CourseSummary
 
 
 class SummaryResponse(BaseModel):

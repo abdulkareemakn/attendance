@@ -1,14 +1,13 @@
-from app.schemas.dashboard import SummaryResponse
-from app.utils import calculate_percentage
-from app.schemas.course import CourseSummary
-from app.schemas.enums import RecordType, Status
 from fastapi import APIRouter, Depends
 from sqlmodel import Session, select
 
 from app.db.connection import get_db
-from app.db.models import Course, User, AttendanceRecord
+from app.db.models import AttendanceRecord, Course, User
+from app.schemas.course import CourseSummary
+from app.schemas.dashboard import SummaryResponse
+from app.schemas.enums import RecordType, Status
 from app.security import get_current_user
-
+from app.utils import calculate_percentage
 
 router = APIRouter(prefix="/dashboard")
 

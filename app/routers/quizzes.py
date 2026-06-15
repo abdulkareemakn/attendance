@@ -1,7 +1,7 @@
-from sqlalchemy.exc import IntegrityError
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, select
 
 from app.db.connection import get_db
@@ -36,7 +36,7 @@ def create_quiz(
     try:
         db.add(new_quiz)
         db.commit()
-    except IntegrityError as e:
+    except IntegrityError:
         db.rollback()
         raise HTTPException(
             status_code=409,
@@ -95,7 +95,7 @@ def update_quiz(
     try:
         db.add(quiz)
         db.commit()
-    except IntegrityError as e:
+    except IntegrityError:
         db.rollback()
         raise HTTPException(
             status_code=409,

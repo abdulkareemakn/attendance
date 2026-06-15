@@ -1,10 +1,6 @@
-import os
+from sqlmodel import Session, create_engine
+
 from app.settings import settings
-
-from dotenv import load_dotenv
-from sqlmodel import create_engine, Session
-
-load_dotenv()
 
 engine = create_engine(settings.database_url)
 
