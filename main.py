@@ -8,7 +8,7 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from app.db.connection import engine, get_db
 from app.routers import assignments, auth, courses, dashboard, quizzes, record
-from app.settings import Settings, settings
+from app.settings import settings
 
 
 @asynccontextmanager

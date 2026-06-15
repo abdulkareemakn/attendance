@@ -3,7 +3,6 @@ import uuid
 
 from pydantic import BaseModel
 
-from app.schemas.course import CourseBase
 from app.schemas.enums import RecordType, Status
 
 

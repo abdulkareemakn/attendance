@@ -34,7 +34,7 @@ def create_assignment(
     try:
         db.add(new_assignment)
         db.commit()
-    except IntegrityError as e:
+    except IntegrityError:
         db.rollback()
         raise HTTPException(
             status_code=409,
@@ -93,7 +93,7 @@ def update_assignment(
     try:
         db.add(assignment)
         db.commit()
-    except IntegrityError as e:
+    except IntegrityError:
         db.rollback()
         raise HTTPException(
             status_code=409,

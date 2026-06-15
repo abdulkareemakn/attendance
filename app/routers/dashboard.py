@@ -5,7 +5,7 @@ from app.db.connection import get_db
 from app.db.models import AttendanceRecord, Course, User
 from app.schemas.course import CourseSummary
 from app.schemas.dashboard import SummaryResponse
-from app.schemas.enums import RecordType, Status
+from app.schemas.enums import RecordType
 from app.security import get_current_user
 from app.utils import calculate_percentage
 

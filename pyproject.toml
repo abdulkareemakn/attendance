@@ -43,6 +43,9 @@ dev = [
 indent-style = "space"
 quote-style = "double"
 
+[tool.ruff.lint]
+ignore = ["E712"]
+
 # executionEnvironments = [
 #   { root = "src/web", pythonVersion = "3.5", pythonPlatform = "Windows", extraPaths = [ "src/service_libs" ], reportMissingImports = "warning" },
 #   { root = "src/sdk", pythonVersion = "3.0", extraPaths = [ "src/backend" ] },
