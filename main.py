@@ -24,7 +24,7 @@ app = FastAPI(
     lifespan=lifespan,
     docs_url="/docs" if settings.deployment_type == "dev" else None,
     redoc_url="/redoc" if settings.deployment_type == "dev" else None,
-    # openapi_url="/openapi.json" if settings.deployment_type == "dev" else None,
+    openapi_url="/openapi.json" if settings.deployment_type == "dev" else None,
 )
 
 app.add_middleware(
